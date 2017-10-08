@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <%- include ./partials/head %>
+  <body>
+    <%- include ./partials/navbar %>
+    <div class="jumbotron jumbotron-fluid vertical-center">
+      <div class="container text-center">
+          <h4 class="display-4">Welcome to Nightlife & Drinking</h4>
+          <p class="lead">Where do you want to go tonight?</p>
+          <!-- <hr class="my-4"> -->
+          <div class="row">
+            <div class="col"></div>
+            <div class="col-lg-6">
+              <form action="/search/api" method="get">
+                  <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for zipcode..." name="search">
+                      <span class="input-group-btn">
+                        <button class="btn btn-secondary btn-danger " type="submit">Go!</button>
+                      </span>
+                    </div>
+              </form> 
+            </div>
+            <div class="col"></div>
+          </div>
+      </div>  
+    </div>
+    
+    <!-- Script -->
+    <%- include ./partials/script %>  
+  </body>
+</html>

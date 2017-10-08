@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <%- include ./partials/head %>
+  <body>
+      <%- include ./partials/navbar %>
+    <div class="container">
+      <% if (message.length > 0){ %>
+        <div class="alert alert-warning" role="alert">
+          <strong><%= message %></strong>
+        </div>
+      <% } %>
+      <form action="/auth/login" method="post" id="loginForm" style="width: 400px; height: 300px;margin-top:10%; border: 1px solid grey; border-radius: 2%; padding: 20px 20px 10px 20px;" class="mr-auto ml-auto" >
+        <h3 class="text-center">Login</h3>
+        <div class="form-group">
+          <label for="email"><strong>Email</strong></label>
+          <input type="email" class="form-control" name="email">
+        </div>
+        <div class="form-group">
+          <label for="password"><strong>Password</strong></label>
+          <input type="password" class="form-control" name="password">
+        </div>
+        <input type="submit" class="btn btn-primary btn-block" value="Login">
+      </form>
+    </div>
+    <%- include ./partials/script %>
+  </body>
+</html>

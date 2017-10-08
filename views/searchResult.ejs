@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <%- include ./partials/head %>
+  <body>
+    <%- include ./partials/navbar %>
+    <div class="sidebar-content">
+        <form action="/search/api" method="get" class="mt-2 mb-2 ml-1 mr-1">
+          <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for zipcode..." name="search">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary btn-danger " type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+              </span>
+            </div>
+      </form> 
+      <% if(responseArr.length >0){ %>
+        <ul class="list-group ml-1 mr-1">
+            <% responseArr.forEach(function(item, i){ %>
+              <li class="list-group-item justify-content-between" id="bar<%= i %>">
+                <div class="row">
+                  <div class="col-auto">
+                    <% if(item.image_url == "") { %>
+                      <div class="text-center "style="width: 99px; height: 99px; border: 1px solid black;">NO IMAGE AVAILABLE</div>
+                    <% } else { %>
+                      <img src="<%= item.image_url %>" alt="" style="width: 100px; height: 100px">
+                      <% }%>
+                  </div>
+                  <div class="col">
+                    <h3 class="name"><%= item.name%></h3>
+                    <p class="rating">Rating: 
+                      <span><%= item.rating%></span></p>
+                    <p class="location">
+                        <span class="address"><%= item.location.address1 %></span>, 
+                        <span class="city"><%=item.location.city %></span>, 
+                        <span class="zipcode"><%=item.location.state %></span> 
+                        <span class="zipcode"><%=item.location.zip_code %></span>
+                        <br>
+                        <span class="phoneNumber"><%=item.display_phone %></span>
+                      </p>
+                    <a class="localUrl" href="<%= item.url%>">View on yelp</a><br>
+                    <a href="/auth/login" class="btn btn-warning mt-2">Make a reservation <span class="badge badge-default badge-pill">#</span></a>
+                  </div>
+                </div>
+              </li>
+            <% }) %>
+        </ul>
+      <% } %>
+      
+    </div>
+    <div id="map">
+
+    </div>
+    
+    <!-- Script -->
+    <%- include ./partials/script %>
+    <script type="text/javascript">
+      var resArr = <%- JSON.stringify(responseArr) %>;
+      console.log(resArr);
+      function initMap(){
+        //Create a map object and specify the DOM element for display
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {
+            lat: resArr[0].coordinates.latitude,
+            lng: resArr[0].coordinates.longitude
+          },
+          zoom: 13
+        });
+
+       
+        //Marker 
+        var markers = [];
+        resArr.forEach(function(place){
+          var contentString = '<div id="content">'+
+            '<h1 id="firstHeading" class="firstHeading">'+ place.name + '</h1>'+
+            '<div id="bodyContent">'+
+
+            '</div>'+
+            '</div>';
+
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          var marker = new google.maps.Marker({
+            position: {
+              lat: place.coordinates.latitude,
+              lng: place.coordinates.longitude
+            },
+            map: map,
+            title: place.name
+          });
+          markers.push(marker);
+          marker.addListener('click', function(){
+            infowindow.open(map, marker);
+            // Close info window after 5 secs
+            setTimeout(function () { infowindow.close(); }, 5000);
+          });
+        });
+        
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEh0e6ep4gtUB0K4Gh0XojeKEqU9d1w1Q&callback=initMap"></script>
+  </body>
+</html>
