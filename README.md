@@ -1,7 +1,7 @@
 # Nightlife Coordination App
 
 ## Project Overview
-This application is a full stack JavaScript nightlife coordination app that let the users view all bars in their area. The users can reserve a place and keep track if their friends are going to the same places. The application also ultilize the authenication by using PassportJS(Local & Facebook Strategy).
+This application is a full stack JavaScript nightlife coordination app that lets the users view all bars in their area. The users can reserve a place and keep track if their friends are going to the same places. The application also ultilizes the authenication by using PassportJS(Local & Facebook Strategy).
 
 The logic of the appication is described below:
 
@@ -21,10 +21,10 @@ The application is divided into 3 parts:
       - **connect-flash** : raise error messages when errors occur
       - **cookie-parser** : parse cookie
       - **ejs** : view engine
-      - **express** : control routings
+      - **express** : control routes
       - **express-session** : session
       - **helmet** : secure express app by setting various HTTP header
-      - **mongoose** : database (User && Poll)
+      - **mongoose** : database (User && Place)
       - **morgan**: HTTP request logger middleware
       - **passport**: Authentication
       - **passport-local** Authentication for Local Strategy
@@ -33,7 +33,7 @@ The application is divided into 3 parts:
   2. Frontend:
       - **Bootstrap**
   3. Map
-      - **Google Map**
+      - **Google Map API**
 
 
 
