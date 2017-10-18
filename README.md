@@ -7,7 +7,7 @@ The logic of the appication is described below:
 
 **As an authenticatied user**
 - The user can view all bars in his/her area.
-- The user can add himself/herselft to a bar to indicate he/she is going there tonight.
+- The user can add himself/herself to a bar to indicate he/she is going there tonight.
 - The user can remove himself/herself from a bar if he/she no longer wants to go there.
 
 **As an unauthenticated user**
