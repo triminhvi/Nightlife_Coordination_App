@@ -3,6 +3,11 @@
   <%- include ./partials/head %>
   <body>
     <%- include ./partials/navbar %>
+    <% if(user && message.length > 0) { %>
+      <div class="alert alert-info container" role="alert">
+        <p><strong><%= message %></strong></p>
+      </div>
+    <% } %>
     <div class="sidebar-content">
         <form action="/search/api" method="get" class="mt-2 mb-2 ml-1 mr-1">
           <div class="input-group">
@@ -25,7 +30,7 @@
                       <% }%>
                   </div>
                   <div class="col">
-                    <h3 class="name"><%= item.name%></h3>
+                    <h4 class="name"><a class="localUrl" href="<%= item.url%>"><%= i+1 %>. <%= item.name%></a></h4>
                     <p class="rating">Rating: 
                       <span><%= item.rating%></span></p>
                     <p class="location">
@@ -36,8 +41,16 @@
                         <br>
                         <span class="phoneNumber"><%=item.display_phone %></span>
                       </p>
-                    <a class="localUrl" href="<%= item.url%>">View on yelp</a><br>
-                    <a href="/auth/login" class="btn btn-warning mt-2">Make a reservation <span class="badge badge-default badge-pill">#</span></a>
+                    <% if(user){ %>
+                      <form action="/profile/addReservation/<%= item.location.zip_code %>/<%= item.id %>" method="post">
+                        <button type="submit" class="btn btn-warning mt-2" style="width: 250px;">Make a reservation</button>
+                      </form>
+                      <form action="/profile/removeReservation/<%= item.location.zip_code %>/<%= item.id %>" method="post">
+                        <button type="submit" class="btn btn-danger mt-2" style="width: 250px;">Remove reservation</button>
+                      </form>
+                    <% } else { %>
+                      <a href="/auth/login" class="btn btn-warning mt-2">Log in to reserve</a>
+                    <% } %>
                   </div>
                 </div>
               </li>
@@ -68,11 +81,13 @@
        
         //Marker 
         var markers = [];
-        resArr.forEach(function(place){
+        resArr.forEach(function(place, i){
           var contentString = '<div id="content">'+
-            '<h1 id="firstHeading" class="firstHeading">'+ place.name + '</h1>'+
+            '<h4 id="firstHeading" class="firstHeading">'+ (i+1) + '. ' + place.name + '</h4>'+
             '<div id="bodyContent">'+
-
+                '<img src="'+ place.image_url + '" alt="" style="width: 200px; height: 200px">' + '<br>' +
+                '<p class="rating">Rating: <span>' + place.rating + '</span></p><br>' +
+                '<p class="location"><span class="address">Address: ' + place.location.address1 + '</span>, <span class="city">' + place.location.city + '</span>, <span class="zipcode">' + place.location.state + '</span> <span class="zipcode">' + place.location.zip_code + '</span><br><span class="phoneNumber">Phone Number: ' + place.display_phone + '</span></p>'   
             '</div>'+
             '</div>';
 

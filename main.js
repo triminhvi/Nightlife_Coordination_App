@@ -46,22 +46,26 @@ db.on('open', function(err){
     console.log(err);
   }
   console.log("Connected to DB");
-})
+});
+var User = require('./model/user');
+var Place = require('./model/place');
 
 // PASSPORT JS
 //Passport Config
 require('./config/passport.js')(passport);
 
 // YELP
-//var yelp = require('./config/yelp.js');
-const yelp = require('yelp-fusion');
-const clientId = "kztN6koqJB61878NnCIMCw";
-const clientSecret = "zyodSpB2NBHA9ReDQOMljO61xoVzqYeadiOQ79p23XSZtXRC6wKkjaeLf4dO46if";
-const token = "OoG9c5GGi6Doel9UeAk8X4F8kPpj-o8srUJ6blwr_nrx4k04BkHeLXALuvepBWdb3pnF1xuqcFB_m8n6o4VyRuoIubmHWFdvCnSfvWKY13-MYMyVNM_kFlT37TLYWXYx";
-const client = yelp.client(token);
+var client = require('./config/yelp.js');
+
 //APP START
 var auth = require('./routes/auth.js');
 app.use('/auth', auth);
+var profile = require('./routes/profile.js');
+app.use('/profile', profile);
+app.use(function(req, res, next){
+  res.locals.user = req.user;
+  next();
+});
 
 app.get('/', function(req, res){
   var responseArr = [];
@@ -70,20 +74,20 @@ app.get('/', function(req, res){
 
 app.get('/search/api', function(req, res){
   var searchInput = req.query.search;
-  client.search({
+  var yelpSearch = client.search({
     term: "bar",
     location: searchInput
   })
   .then(function(response){
     var responseArr = response.jsonBody.businesses;
-    console.log(responseArr[0]);
     res.render('searchResult', {title: 'Search Result',
-                                responseArr: responseArr});
+                                responseArr: responseArr,
+                                message: req.flash('reserveMessage')});
   })
   .catch(function(e){
     console.log(e)
-  })
- 
+    res.status(404).send('There is an error or Please make sure you enter correct input requirement');
+  });
 });
 
 app.listen(process.env.PORT || 3000, function(){

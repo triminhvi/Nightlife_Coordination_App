@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <%- include ./partials/head %>
+  <body>
+      <%- include ./partials/navbar %>
+    <div class="container">
+      <% if (message.length > 0){ %>
+        <div class="alert alert-warning" role="alert">
+          <strong><%= message %></strong>
+        </div>
+      <% } %>
+    </div>
+    <div class="container places mt-4">
+      <% if(places.length >0) { %>
+        <h2>Reservation Table</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th class="text-center">Reserved Place</th>
+              <th class="text-center">Zip Code</th>
+              <th class="text-center">Number of People Going</th>
+              <th class="text-center">List of People Going</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% places.forEach(function(place, i){ %>  
+              <tr>
+                <th scope="row"><%= i+1 %></th>
+                <td class="text-center"><%= place.name %></td>
+                <td class="text-center"><%= place.zip_code %></td>
+                <td class="text-center"><%= place.numgoing %></td>
+                <% if(place.numgoing == 0) { %>
+                  <td class="text-center">N/A</td>
+                <% } else { %>
+                  <td class="text-center">
+                    <ul class="list-group">
+                      <% place.reservedList.forEach(function(person){ %>
+                        <% if ((person == user.local.username) || (person == user.facebook.email)) { %>
+                          <li class="list-group-item active "><%= person %>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <form action="/profile/removeReservation/<%= place.zip_code %>/<%= place.name %>" method="post">
+                              <input type="submit" class="btn btn-danger" value="Remove">
+                            </form>
+                            
+                        <% } else { %>
+                          <li class="list-group-item"><%= person %></li>
+                        <% } %>
+                      <% }) %>
+                    </ul>
+                  </td>
+                <% } %>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <h3>No Result Yet</h3>
+      <% } %>
+    </div>
+    
+    
+    <%- include ./partials/script %>
+  </body>
+</html>

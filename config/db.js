@@ -1,3 +1,3 @@
 module.exports = {
-  url : "mongodb://localhost:27017/nightlight"
+  url : process.env.MONGODB_URI
 }

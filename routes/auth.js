@@ -7,7 +7,7 @@ router.get('/signup', function(req, res){
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/',
+  successRedirect: '/auth/login',
   failureRedirect: '/auth/signup',
   failureFlash: true
 }));
@@ -19,9 +19,17 @@ router.get('/login', function(req, res){
 });
 
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: "/",
+  successRedirect: "/profile",
   failureRedirect: "/auth/login",
   failureFlash: true
+}));
+
+//FACEBOOK LOGIN
+router.get('/facebook', passport.authenticate('facebook', {scope: ['user_friends', 'email', 'public_profile']}));
+
+router.get('/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/profile',
+  failureRedirect: '/auth/login'
 }));
 
 router.get('/logout', function(req, res){
