@@ -1,3 +1,4 @@
+var compression = require('compression')
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -14,6 +15,7 @@ var Yelp = require('yelp');
 var app = express();
 
 //APP CONFIG
+app.use(compression());
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
